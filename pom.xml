@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.haizhi</groupId>
+    <artifactId>webinfo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-webapp -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-annotations -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-plus -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+            <version>9.4.6.v20170531</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-all -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-all</artifactId>
+            <version>5.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.3.10.RELEASE</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.6.v20170531</version>
+                <!--
+                                <configuration>
+                                    <connectors>
+                                        <connector implementation="org.eclipse.jetty.server.ServerConnector">
+                                            <port>8080</port>
+                                        </connector>
+                                    </connectors>
+                                </configuration>
+
+                                                <configuration>
+                                                    <webApp>
+                                                        <contextPath>/</contextPath>
+                                                        <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
+                                                    </webApp>
+                                                    <stopKey>exit</stopKey>
+                                                    <stopPort>9090</stopPort>
+                                                    <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+                                                    <scanIntervalSeconds>1</scanIntervalSeconds>
+                                                    <connectors>
+                                                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                                                            <port>8080</port>
+                                                            <maxIdleTime>30000</maxIdleTime>
+                                                        </connector>
+                                                    </connectors>
+                                                    <httpConnector>
+                                                        <port>8080</port>
+                                                    </httpConnector>
+                                                    <requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+                                                        <filename>target/access.log</filename>
+                                                        <retainDays>90</retainDays>
+                                                        <append>false</append>
+                                                        <extended>false</extended>
+                                                        <logTimeZone>GMT+8:00</logTimeZone>
+                                                    </requestLog>
+                                                    <systemProperties>
+                                                        <systemProperty>
+                                                            <name>productionMode</name>
+                                                            <value>${productionMode}</value>
+                                                        </systemProperty>
+                                                    </systemProperties>
+                                                </configuration>
+                                                -->
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

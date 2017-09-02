@@ -2,6 +2,8 @@ package com.haizhi.webinfo.web;
 
 import com.haizhi.webinfo.config.SpringConfig;
 import com.haizhi.webinfo.web.servlet.TestServlet;
+import org.apache.logging.log4j.web.Log4jServletContextListener;
+import org.apache.logging.log4j.web.Log4jServletFilter;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -10,8 +12,15 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.DispatcherType;
+import java.nio.charset.Charset;
+import java.util.EnumSet;
 
 /**
  * Created by haizhi on 2017/9/1.
@@ -103,9 +112,21 @@ public class JettyRunner {
         //String path = Thread.currentThread().getContextClassLoader().getResource("com/haizhi/webinfo/web/servlet").getPath();
         //servletContext.setResourceBase(path);
         servletContext.addServlet(new ServletHolder(new TestServlet()),"/test");
-        servletContext.addServlet(new ServletHolder(new DispatcherServlet()),"/");
+
+        DispatcherServlet springMVC = new DispatcherServlet();
+        springMVC.setContextConfigLocation("classpath:springMVC/springMVC.xml");
+        servletContext.addServlet(new ServletHolder(springMVC),"/");
+
         servletContext.setInitParameter("contextClass", AnnotationConfigWebApplicationContext.class.getName());
         servletContext.setInitParameter("contextConfigLocation", SpringConfig.class.getName());
-        //servletContext.addEventListener();
+        servletContext.setInitParameter("encoding", "UTF-8");
+        servletContext.addEventListener(new ContextLoaderListener());
+        servletContext.addEventListener(new RequestContextListener());
+
+        servletContext.addEventListener(new Log4jServletContextListener());
+
+        EnumSet<DispatcherType> allDispatcherType = EnumSet.noneOf(DispatcherType.class);
+        servletContext.addFilter(Log4jServletFilter.class.getName(),"/*",allDispatcherType);
+        servletContext.addFilter(CharacterEncodingFilter.class.getName(),"/*",null);
     }
 }

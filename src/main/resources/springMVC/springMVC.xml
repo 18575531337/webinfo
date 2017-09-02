@@ -6,12 +6,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <!-- 启动Springmvc注解驱动
+    <!-- 启动Springmvc注解驱动-->
     <mvc:annotation-driven />
--->
-    <!-- 自动将控制器加载到bean
-    <context:component-scan base-package="com.crazypig.demo.embededwebapp"></context:component-scan>
-    -->
+
+    <!-- 自动将控制器加载到bean-->
+    <context:component-scan base-package="com.haizhi.webinfo.controller"></context:component-scan>
+
     <!-- 配置处理静态资源的请求 -->
     <!-- <mvc:resources mapping="assets/js/**" location="assets/js/" />
     <mvc:resources mapping="assets/css/**" location="assets/css/" /> -->

@@ -1,11 +1,13 @@
 package com.haizhi.webinfo.web;
 
 import com.haizhi.webinfo.config.SpringConfig;
+import com.haizhi.webinfo.config.SpringConfigMVC;
 import com.haizhi.webinfo.web.servlet.TestServlet;
 import org.apache.logging.log4j.web.Log4jServletContextListener;
 import org.apache.logging.log4j.web.Log4jServletFilter;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -16,6 +18,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.DispatcherType;
@@ -113,20 +116,39 @@ public class JettyRunner {
         //servletContext.setResourceBase(path);
         servletContext.addServlet(new ServletHolder(new TestServlet()),"/test");
 
-        DispatcherServlet springMVC = new DispatcherServlet();
-        springMVC.setContextConfigLocation("classpath:springMVC/springMVC.xml");
-        servletContext.addServlet(new ServletHolder(springMVC),"/");
-
         servletContext.setInitParameter("contextClass", AnnotationConfigWebApplicationContext.class.getName());
         servletContext.setInitParameter("contextConfigLocation", SpringConfig.class.getName());
         servletContext.setInitParameter("encoding", "UTF-8");
         servletContext.addEventListener(new ContextLoaderListener());
         servletContext.addEventListener(new RequestContextListener());
 
-        servletContext.addEventListener(new Log4jServletContextListener());
+        //spring mvc
+        DispatcherServlet springMVC = new DispatcherServlet();
+        //springMVC.setContextConfigLocation("classpath:springMVC/springMVC.xml");
+        ServletHolder springMVCHolder = new ServletHolder(springMVC);
+        springMVCHolder.setInitParameter("contextClass",AnnotationConfigWebApplicationContext.class.getName());
+        springMVCHolder.setInitParameter("contextConfigLocation", SpringConfigMVC.class.getName());
+        servletContext.addServlet(springMVCHolder,"/");
 
+        //log4j2
+        servletContext.addEventListener(new Log4jServletContextListener());
         EnumSet<DispatcherType> allDispatcherType = EnumSet.noneOf(DispatcherType.class);
         servletContext.addFilter(Log4jServletFilter.class.getName(),"/*",allDispatcherType);
-        servletContext.addFilter(CharacterEncodingFilter.class.getName(),"/*",null);
+
+        //编码
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setEncoding("UTF-8");
+        encodingFilter.setForceEncoding(true);
+        FilterHolder encodingFilterHolder = new FilterHolder(encodingFilter);
+        servletContext.addFilter(encodingFilterHolder,"/*",allDispatcherType);
+
+        //spring-security
+        FilterHolder filterHolder = new FilterHolder(new DelegatingFilterProxy());
+        filterHolder.setName("springSecurityFilterChain");
+        //filterHolder.setDisplayName();
+        servletContext.addFilter(filterHolder,"/*",
+                EnumSet.of(DispatcherType.REQUEST,DispatcherType.ASYNC));
     }
+
+
 }

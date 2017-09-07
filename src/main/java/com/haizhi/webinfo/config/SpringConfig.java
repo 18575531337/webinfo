@@ -15,7 +15,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  */
 @ComponentScan(basePackages = "com.haizhi.webinfo")
 @Configuration
-@Import({SpringConfigSecurity.class})
+//@Import({SpringConfigSecurity.class})
 public class SpringConfig  {
 
 }

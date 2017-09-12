@@ -2,6 +2,7 @@ package com.haizhi.webinfo.web;
 
 import com.haizhi.webinfo.config.SpringConfig;
 import com.haizhi.webinfo.config.SpringConfigMVC;
+import com.haizhi.webinfo.config.SpringConfigSecurity;
 import com.haizhi.webinfo.web.servlet.TestServlet;
 import org.apache.logging.log4j.web.Log4jServletContextListener;
 import org.apache.logging.log4j.web.Log4jServletFilter;
@@ -14,6 +15,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -116,7 +118,8 @@ public class JettyRunner {
         //servletContext.setResourceBase(path);
         servletContext.addServlet(new ServletHolder(new TestServlet()),"/test");
 
-        servletContext.setInitParameter("contextClass", AnnotationConfigWebApplicationContext.class.getName());
+        servletContext.setInitParameter("contextClass",
+                AnnotationConfigWebApplicationContext.class.getName());
         servletContext.setInitParameter("contextConfigLocation", SpringConfig.class.getName());
         servletContext.setInitParameter("encoding", "UTF-8");
         servletContext.addEventListener(new ContextLoaderListener());
@@ -126,7 +129,8 @@ public class JettyRunner {
         DispatcherServlet springMVC = new DispatcherServlet();
         //springMVC.setContextConfigLocation("classpath:springMVC/springMVC.xml");
         ServletHolder springMVCHolder = new ServletHolder(springMVC);
-        springMVCHolder.setInitParameter("contextClass",AnnotationConfigWebApplicationContext.class.getName());
+        springMVCHolder.setInitParameter("contextClass",
+                AnnotationConfigWebApplicationContext.class.getName());
         springMVCHolder.setInitParameter("contextConfigLocation", SpringConfigMVC.class.getName());
         servletContext.addServlet(springMVCHolder,"/");
 
@@ -143,10 +147,13 @@ public class JettyRunner {
         servletContext.addFilter(encodingFilterHolder,"/*",allDispatcherType);
 
         //spring-security
-        FilterHolder filterHolder = new FilterHolder(new DelegatingFilterProxy());
-        filterHolder.setName("springSecurityFilterChain");
-        //filterHolder.setDisplayName();
-        servletContext.addFilter(filterHolder,"/*",
+        FilterHolder securityHolder = new FilterHolder(new DelegatingFilterProxy());
+        securityHolder.setName("springSecurityFilterChain");
+        securityHolder.setInitParameter("contextClass",
+                AnnotationConfigWebApplicationContext.class.getName());
+        securityHolder.setInitParameter("contextConfigLocation",
+                SpringConfigSecurity.class.getName());
+        servletContext.addFilter(securityHolder,"/*",
                 EnumSet.of(DispatcherType.REQUEST,DispatcherType.ASYNC));
     }
 

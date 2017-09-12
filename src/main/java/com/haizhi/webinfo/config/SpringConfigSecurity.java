@@ -18,11 +18,13 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,87 +49,5 @@ public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
         return manager;
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        try {
-            http.regexMatcher("/*");
 
-            http.addFilterBefore(null,SecurityContextPersistenceFilter.class);
-
-            http.securityContext().securityContextRepository(new SecurityContextRepository() {
-                @Override
-                public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
-                    return null;
-                }
-
-                @Override
-                public void saveContext(SecurityContext context, HttpServletRequest request,
-                                        HttpServletResponse response) {
-
-                }
-
-                @Override
-                public boolean containsContext(HttpServletRequest request) {
-                    return false;
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
-    }
-
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
-
-    @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return super.userDetailsServiceBean();
-    }
-
-    @Override
-    public void init(WebSecurity web) throws Exception {
-        super.init(web);
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext context) {
-        super.setApplicationContext(context);
-    }
-
-    @Override
-    public void setTrustResolver(AuthenticationTrustResolver trustResolver) {
-        super.setTrustResolver(trustResolver);
-    }
-
-    @Override
-    public void setContentNegotationStrategy(ContentNegotiationStrategy contentNegotiationStrategy) {
-        super.setContentNegotationStrategy(contentNegotiationStrategy);
-    }
-
-    @Override
-    public void setObjectPostProcessor(ObjectPostProcessor<Object> objectPostProcessor) {
-        super.setObjectPostProcessor(objectPostProcessor);
-    }
-
-    @Override
-    public void setAuthenticationConfiguration(AuthenticationConfiguration authenticationConfiguration) {
-        super.setAuthenticationConfiguration(authenticationConfiguration);
-    }
 }

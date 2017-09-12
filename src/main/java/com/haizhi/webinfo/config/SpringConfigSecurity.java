@@ -39,15 +39,19 @@ public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+                .withUser("aaa").password("bbb").roles("USER");
     }
-
+/*
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("user").password("password").roles("USER").build());
+        manager.createUser(User.withUsername("aaa").password("bbb").roles("USER").build());
         return manager;
     }
-
-
+*/
+    /*
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().mvcMatchers("/getToken").hasRole("ADMIN");
+    }*/
 }

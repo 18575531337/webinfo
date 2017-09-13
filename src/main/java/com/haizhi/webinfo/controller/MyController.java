@@ -1,6 +1,7 @@
 package com.haizhi.webinfo.controller;
 
 import com.haizhi.webinfo.bean.A;
+import com.haizhi.webinfo.constants.Role;
 import com.haizhi.webinfo.response.RespData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +27,7 @@ public class MyController {
         return RespData.SUCCESS().setData("世界");
     }
 
-    @PreAuthorize("hasAuthority('super_admin')")
+    @PreAuthorize("hasAuthority('"+ Role.USER+"')")
     @RequestMapping("/getToken")
     public RespData getToken(){
         return RespData.SUCCESS().setData("你好");

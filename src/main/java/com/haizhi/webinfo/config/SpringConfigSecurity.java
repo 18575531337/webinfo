@@ -1,5 +1,6 @@
 package com.haizhi.webinfo.config;
 
+import com.haizhi.webinfo.constants.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +40,8 @@ public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("aaa").password("bbb").roles("USER");
+                .withUser("aaa").password("bbb").roles(Role.USER);
+
     }
 /*
     @Bean
@@ -49,9 +51,11 @@ public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
         return manager;
     }
 */
-    /*
+    /**/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().mvcMatchers("/getToken").hasRole("ADMIN");
-    }*/
+        http.authorizeRequests().antMatchers("/getT").hasRole(Role.USER);
+    }
+
+
 }

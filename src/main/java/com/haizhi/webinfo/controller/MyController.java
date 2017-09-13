@@ -21,6 +21,11 @@ public class MyController {
         return "海致";
     }
 
+    @RequestMapping("/getT")
+    public RespData getT(){
+        return RespData.SUCCESS().setData("世界");
+    }
+
     @PreAuthorize("hasAuthority('super_admin')")
     @RequestMapping("/getToken")
     public RespData getToken(){

@@ -122,16 +122,15 @@ public class JettyRunner {
                 AnnotationConfigWebApplicationContext.class.getName());
         servletContext.setInitParameter("contextConfigLocation", SpringConfig.class.getName());
         servletContext.setInitParameter("encoding", "UTF-8");
+
         servletContext.addEventListener(new ContextLoaderListener());
         servletContext.addEventListener(new RequestContextListener());
 
         //spring mvc
         DispatcherServlet springMVC = new DispatcherServlet();
-        //springMVC.setContextConfigLocation("classpath:springMVC/springMVC.xml");
         ServletHolder springMVCHolder = new ServletHolder(springMVC);
-        springMVCHolder.setInitParameter("contextClass",
-                AnnotationConfigWebApplicationContext.class.getName());
-        springMVCHolder.setInitParameter("contextConfigLocation", SpringConfigMVC.class.getName());
+        springMVCHolder.setInitParameter("contextClass",AnnotationConfigWebApplicationContext.class.getName());
+        //springMVCHolder.setInitParameter("contextConfigLocation", SpringConfigMVC.class.getName());
         servletContext.addServlet(springMVCHolder,"/");
 
         //log4j2
@@ -146,15 +145,14 @@ public class JettyRunner {
         FilterHolder encodingFilterHolder = new FilterHolder(encodingFilter);
         servletContext.addFilter(encodingFilterHolder,"/*",allDispatcherType);
 
-        //spring-security
+        /*spring-security*/
         FilterHolder securityHolder = new FilterHolder(new DelegatingFilterProxy());
         securityHolder.setName("springSecurityFilterChain");
-        securityHolder.setInitParameter("contextClass",
-                AnnotationConfigWebApplicationContext.class.getName());
-        securityHolder.setInitParameter("contextConfigLocation",
-                SpringConfigSecurity.class.getName());
+        //securityHolder.setInitParameter("contextClass",AnnotationConfigWebApplicationContext.class.getName());
+        //securityHolder.setInitParameter("contextConfigLocation",SpringConfigSecurity.class.getName());
         servletContext.addFilter(securityHolder,"/*",
                 EnumSet.of(DispatcherType.REQUEST,DispatcherType.ASYNC));
+
     }
 
 

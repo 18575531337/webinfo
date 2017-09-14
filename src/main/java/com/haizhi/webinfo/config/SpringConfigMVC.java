@@ -19,7 +19,6 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-//@ComponentScan(basePackages = "com.haizhi.webinfo.controller")
 public class SpringConfigMVC extends WebMvcConfigurerAdapter {
 
     @Override

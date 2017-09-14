@@ -23,18 +23,24 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.context.HttpRequestResponseHolder;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by JuniFire on 2017/9/5.
  */
 @EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        securedEnabled = true
+        //prePostEnabled = true
+)
 public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -54,7 +60,28 @@ public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
     /**/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/getT").hasRole(Role.USER);
+        //http.authorizeRequests().antMatchers("/getT").hasRole(Role.USER);
+        http
+		.authorizeRequests()
+                //.antMatchers("/getT").hasRole(Role.USER)
+            //.antMatchers("/getT").rememberMe()
+                //.anyRequest().permitAll()
+                //.anyRequest().anonymous()
+			.anyRequest().authenticated()
+			.and()
+		.formLogin()
+			.and()
+		.httpBasic();
+
+        /*session timeout
+        http.sessionManagement().invalidSessionStrategy(new InvalidSessionStrategy() {
+            @Override
+            public void onInvalidSessionDetected(HttpServletRequest httpServletRequest,
+                    HttpServletResponse httpServletResponse) throws IOException, ServletException {
+
+            }
+        });
+        */
     }
 
 

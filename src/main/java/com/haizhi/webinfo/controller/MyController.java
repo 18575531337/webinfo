@@ -4,6 +4,7 @@ import com.haizhi.webinfo.bean.A;
 import com.haizhi.webinfo.constants.Role;
 import com.haizhi.webinfo.response.RespData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ public class MyController {
         return "海致";
     }
 
+    @Secured("ROLE_"+Role.ADMIN)
     @RequestMapping("/getT")
     public RespData getT(){
         return RespData.SUCCESS().setData("世界");

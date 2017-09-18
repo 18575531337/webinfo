@@ -130,6 +130,7 @@ public class JettyRunner {
         DispatcherServlet springMVC = new DispatcherServlet();
         ServletHolder springMVCHolder = new ServletHolder(springMVC);
         springMVCHolder.setInitParameter("contextClass",AnnotationConfigWebApplicationContext.class.getName());
+        springMVCHolder.setAsyncSupported(true);
         //springMVCHolder.setInitParameter("contextConfigLocation", SpringConfigMVC.class.getName());
         servletContext.addServlet(springMVCHolder,"/");
 
@@ -137,6 +138,7 @@ public class JettyRunner {
         servletContext.addEventListener(new Log4jServletContextListener());
         EnumSet<DispatcherType> allDispatcherType = EnumSet.noneOf(DispatcherType.class);
         servletContext.addFilter(Log4jServletFilter.class.getName(),"/*",allDispatcherType);
+        servletContext.addEventListener(new Log4jServletContextListener());
 
         //编码
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();

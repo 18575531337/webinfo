@@ -18,12 +18,19 @@ public class MyController {
     @Autowired
     A a;
 
+    @Secured(Role.ANONYMOUSLY)
+    @RequestMapping("/logout")
+    public void logout(){
+        System.out.println("Logout is running ...");
+    }
+
+    @Secured(Role.ANONYMOUSLY)
     @RequestMapping("/getTest")
     public String getTest(){
         return "海致";
     }
 
-    @Secured("ROLE_"+Role.ADMIN)
+    @Secured(Role.PREFIX+Role.USER)
     @RequestMapping("/getT")
     public RespData getT(){
         return RespData.SUCCESS().setData("世界");

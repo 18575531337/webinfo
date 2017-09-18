@@ -1,5 +1,8 @@
 package com.haizhi.webinfo.config;
 
+import com.haizhi.webinfo.auth.AllUserDetails;
+import com.haizhi.webinfo.auth.Sha1AuthenticationProvider;
+import com.haizhi.webinfo.auth.handler.LogoutHandler;
 import com.haizhi.webinfo.constants.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.context.HttpRequestResponseHolder;
@@ -42,46 +46,52 @@ import java.io.IOException;
         //prePostEnabled = true
 )
 public class SpringConfigSecurity extends WebSecurityConfigurerAdapter {
-
+/*
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("aaa").password("bbb").roles(Role.USER);
 
     }
-/*
+*/
+
+/**/
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService getUserDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("aaa").password("bbb").roles("USER").build());
+        manager.createUser(User.withUsername("aaa").password("bbb").roles(Role.USER).build());
         return manager;
     }
-*/
+
+/*
+    @Bean
+    public Sha1AuthenticationProvider getSha1AuthenticationProvider() {
+        return new Sha1AuthenticationProvider();
+    }
+
+    @Bean
+    public AllUserDetails springDataUserDetailsService() {
+        return new AllUserDetails();
+    }
+    */
+/*
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }*/
+
     /**/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.authorizeRequests().antMatchers("/getT").hasRole(Role.USER);
         http
 		.authorizeRequests()
-                //.antMatchers("/getT").hasRole(Role.USER)
-            //.antMatchers("/getT").rememberMe()
-                //.anyRequest().permitAll()
-                //.anyRequest().anonymous()
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
 			.and()
+        .logout().invalidateHttpSession(true).logoutUrl("/logout").logoutSuccessHandler(new LogoutHandler())
+                .and()
 		.httpBasic();
-
-        /*session timeout
-        http.sessionManagement().invalidSessionStrategy(new InvalidSessionStrategy() {
-            @Override
-            public void onInvalidSessionDetected(HttpServletRequest httpServletRequest,
-                    HttpServletResponse httpServletResponse) throws IOException, ServletException {
-
-            }
-        });
-        */
     }
 
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Created by haizhi on 2017/9/18.
  */
-public class LogoutHandler implements LogoutSuccessHandler {
+public class AccountLogoutHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) throws IOException, ServletException {

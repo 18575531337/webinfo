@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
  * Created by haizhi on 2017/9/2.
  */
 @Component
-public class A {
+public class User {
 
     @PostConstruct
     public void init(){

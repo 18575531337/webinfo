@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by haizhi on 2017/9/2.
  */
 @RestController
-public class MyController {
+public class UserController {
 
     @Autowired
     A a;
@@ -25,7 +25,7 @@ public class MyController {
         System.out.println("Logout is running ...");
     }
 
-    @Secured(Role.ANONYMOUSLY)
+    //@Secured(Role.ADMIN)
     @RequestMapping("/getTest")
     public String getTest(){
         return "海致";
